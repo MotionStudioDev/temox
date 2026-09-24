@@ -1,0 +1,21 @@
+{
+  "name": "grave-uptime",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Button and modal based Discord uptime monitor for Render services.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "@supabase/supabase-js": "^2.57.4",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: grave-uptime
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: PANEL_CHANNEL_ID
+        sync: false
+      - key: PUBLIC_URL
+        sync: false
+      - key: PING_INTERVAL_MINUTES
+        value: "5"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: BOT_OWNER_ID
+        sync: false
+      - key: UPTIME_LOG_CHANNEL_ID
+        value: "1552643134683357274"
