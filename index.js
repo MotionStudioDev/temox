@@ -1,10 +1,10 @@
 require("dotenv").config();
 
+const express = require("express");
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const { loadCommands } = require("./utils/loaders");
 const { loadEvents } = require("./utils/loaders");
 const { loadTargets } = require("./services/targetStore");
-const { startHttpServer } = require("./services/httpServer");
 const { startMonitor } = require("./services/uptimeMonitor");
 const { loadSettings } = require("./services/settings");
 
@@ -31,12 +31,37 @@ client.config = {
   pingIntervalMinutes: Math.max(1, Number(process.env.PING_INTERVAL_MINUTES || 5))
 };
 
+const app = express();
+const port = Number(process.env.PORT) || 3000;
+
+app.get("/", (_request, response) => {
+  response.status(200).send("GraveUptime bot aktif.");
+});
+
+app.get("/ping", (_request, response) => {
+  response.status(200).json({
+    pong: true,
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get("/health", (_request, response) => {
+  response.status(200).json({
+    status: "ok",
+    uptime: process.uptime(),
+    lastPing: client.lastPing || null
+  });
+});
+
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Express sunucusu ${port} portunda aktif.`);
+});
+
 async function bootstrap() {
   await loadTargets();
   client.settings = await loadSettings();
   await loadCommands(client);
   await loadEvents(client);
-  startHttpServer(client);
   startMonitor(client);
   await client.login(process.env.DISCORD_TOKEN);
 }
